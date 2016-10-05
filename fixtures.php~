@@ -1,0 +1,25 @@
+<?php
+          $con=mysqli_connect("matty-christopher.com","mattyc5","D9K7bgEnr","mattyc5_app");
+          
+          $quizname=$_POST["quizname"];
+
+          if(!empty($quizname)){
+             $result = mysqli_prepare($con, "select questions.*, question_stats.* from questions,quiz,question_stats where quiz.quiz_name=? and quiz.quiz_id=questions.quiz_id and question_stats.question_id = questions.question_id and questions.complete=1 order by -LOG(rand())/questions.total_score limit 10"); 
+             mysqli_stmt_bind_param($result, "s",$quizname);
+             mysqli_stmt_execute($result);
+             $result = mysqli_stmt_get_result($result);
+          }
+          else{
+             $result = mysqli_query($con, "SELECT question_stats.*,questions.* FROM questions,question_stats WHERE questions.complete=1 and question_stats.question_id = questions.question_id  ORDER BY RAND() LIMIT 100");
+          }
+
+          $questions = array();
+          
+          while($row =mysqli_fetch_assoc($result)){
+          	$questions[]=$row;
+          }
+          
+          echo json_encode($questions);
+          mysqli_close($con);
+          
+?>

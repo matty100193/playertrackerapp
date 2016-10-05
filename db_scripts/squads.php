@@ -1,0 +1,19 @@
+<?php
+          $con=mysqli_connect("localhost","matchr3_prem16","matty100","matchr3_prem16");
+          
+             $currentDate=getdate();
+             $result = mysqli_prepare($con, "select Teams.*,Players.*from Teams Left join Players ON Players.Team=Teams.name Order By Teams.name"); 
+             mysqli_stmt_execute($result);
+             $result = mysqli_stmt_get_result($result);
+        
+
+          $teams = array();
+          
+          while($row =mysqli_fetch_assoc($result)){
+          	$teams[]=$row;
+          }
+          
+          echo json_encode($teams);
+          mysqli_close($con);
+          
+?>
