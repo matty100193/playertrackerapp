@@ -44,6 +44,7 @@
         android:textColor="#403d3d"
         android:id="@+id/textView3"
         android:layout_marginLeft="15dp"
+        android:layout_marginRight="20dp"
         android:layout_alignBottom="@+id/imageView"
         android:layout_centerHorizontal="true" />
 

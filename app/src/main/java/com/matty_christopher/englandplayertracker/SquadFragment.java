@@ -21,8 +21,13 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -95,10 +100,10 @@ public class SquadFragment extends Fragment implements View.OnClickListener {
         button.setOnClickListener(this);
 
         DatabaseConnection_Fixtures databaseConnection_fixtures=new DatabaseConnection_Fixtures();
-        databaseConnection_fixtures.getSquads(new Db_response<ArrayList<ArrayList<String>>>() {
+        databaseConnection_fixtures.getSquads(new Db_response<JSONArray>() {
             @Override
-            public void processFinish(ArrayList<ArrayList<String>> output) {
-                if(output.size()>0){
+            public void processFinish(JSONArray output) {
+                if(output.length()>0){
                     fillTable(output);
                 }
                 else{
@@ -110,7 +115,7 @@ public class SquadFragment extends Fragment implements View.OnClickListener {
         return v;
     }
 
-    private void fillTable(ArrayList<ArrayList<String>> output) {
+    private void fillTable(JSONArray output) {
         TableLayout tableLayout=(TableLayout)v.findViewById(R.id.squads_tables);
 
         int[] logos={R.drawable.afc_bournemouth,R.drawable.arsenal,R.drawable.burnley,R.drawable.chelsea,R.drawable.crystal_palace,
@@ -118,14 +123,36 @@ public class SquadFragment extends Fragment implements View.OnClickListener {
         R.drawable.middlesbrough,R.drawable.southampton,R.drawable.stoke,R.drawable.sunderland,R.drawable.swansea,R.drawable.tottenham,R.drawable.watford,
         R.drawable.west_bromwich,R.drawable.west_ham};
 
-        HashSet team=new HashSet();
+        ArrayList<String> wins=new ArrayList<>();
+        ArrayList<String> draws=new ArrayList<>();
+        ArrayList<String> losses=new ArrayList<>();
+        ArrayList<String> teams=new ArrayList<>();
+        for (int i=0;i<output.length();i++){
+            String teamName="";
+            String win="";
+            String draw="";
+            String lost="";
+            try {
+                JSONObject jsonobject = output.getJSONObject(i);
+                teamName=jsonobject.getString("name");
+                win=jsonobject.getString("wins");
+                draw=jsonobject.getString("draws");
+                lost=jsonobject.getString("lost");
+                //Log.e("test team name",teamName);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            if(!teams.contains(teamName)){
+                teams.add(teamName);
+                wins.add(win);
+                draws.add(draw);
+                losses.add(lost);
+            }
 
-        for (int i=0;i<output.size();i++){
-            team.add(output.get(i).get(0));
         }
-        List<String> teamlist=new ArrayList<String>(team);
-        Collections.sort(teamlist);
-        String prev="";
+        int loops=0;
+        int startPos=0;
+        long time1=new Date().getTime();
         for(int i=0;i<logos.length;i++){
 
             View tr = inflate.inflate(R.layout.squadrow, null,false);
@@ -133,11 +160,63 @@ public class SquadFragment extends Fragment implements View.OnClickListener {
             Drawable logo= ContextCompat.getDrawable(getActivity(),logos[i]);
             teamLogo.setImageDrawable(logo);
             TextView teamname=(TextView)tr.findViewById(R.id.name);
-            teamname.setText(teamlist.get(i));
-
-
+            teamname.setText(teams.get(i));
+            TextView record=(TextView)tr.findViewById(R.id.textView3);
+            record.setText("wins: " + wins.get(i) + "  draws: " + draws.get(i) + "  lost: " + losses.get(i));
             tableLayout.addView(tr);
+
+            try {
+                int currPos=0;
+                playerloop:
+                for(int j=startPos;j<output.length();j++,currPos++){
+                    JSONObject jsonobject = output.getJSONObject(j);
+                    String currTeamName=jsonobject.getString("name");
+                    String playerName=jsonobject.getString("Name");
+                    String position=jsonobject.getString("position");
+                    int age=jsonobject.optInt("Age", 0);
+                    int played=jsonobject.optInt("played", 0);
+                    int goals=jsonobject.optInt("goals", 0);
+                    loops++;
+                    if(!currTeamName.equals(teams.get(i))){
+                        currPos=j;
+                        startPos=currPos;
+                        //Log.e("check row", currTeamName + " " + teams.get(i) + " " + startPos+" "+j);
+                        break playerloop;
+                    }
+                    else if(!playerName.equals("null")){
+
+
+
+
+                        View tr_player = inflate.inflate(R.layout.player_row, null,false);
+                        TextView currPlayer=(TextView)tr_player.findViewById(R.id.name_txt);
+                        currPlayer.setText(playerName);
+
+                        TextView currPosiotion=(TextView)tr_player.findViewById(R.id.textView2);
+                        currPosiotion.setText(position);
+
+                        TextView currAge=(TextView)tr_player.findViewById(R.id.agetxt);
+                        currAge.setText("Age: "+age);
+
+                        TextView currMatches=(TextView)tr_player.findViewById(R.id.matchesTxt);
+                        currMatches.setText("Matches: "+played);
+
+                        TextView currGoals=(TextView)tr_player.findViewById(R.id.textView4);
+                        currGoals.setText("Goals: "+goals);
+
+                        tableLayout.addView(tr_player);
+                    }
+
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+
         }
+        long time2=new Date().getTime();
+        Log.e("measure Time",""+(time2-time1)+" loops: "+loops);
     }
 
     // TODO: Rename method, update argument and hook method into UI event

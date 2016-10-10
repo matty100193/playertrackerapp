@@ -30,7 +30,7 @@ class DatabaseConnection_Fixtures {
         new getFixturesAsync(response).execute();
     }
 
-    public void getSquads(Db_response<ArrayList<ArrayList<String>>> response){
+    public void getSquads(Db_response<JSONArray> response){
         Log.e("tag","test before");
         new getSquadsAsync(response).execute();
     }
@@ -106,11 +106,11 @@ class DatabaseConnection_Fixtures {
         }
     }
 
-    public class getSquadsAsync extends AsyncTask<Void,Void,ArrayList<ArrayList<String>>> {
+    public class getSquadsAsync extends AsyncTask<Void,Void,JSONArray> {
 
-        final Db_response<ArrayList<ArrayList<String>>> response;
+        final Db_response<JSONArray> response;
 
-        public getSquadsAsync(Db_response<ArrayList<ArrayList<String>>> response){
+        public getSquadsAsync(Db_response<JSONArray> response){
 
             this.response=response;
         }
@@ -118,16 +118,16 @@ class DatabaseConnection_Fixtures {
 
 
         @Override
-        protected void onPostExecute(ArrayList<ArrayList<String>> arrayLists) {
+        protected void onPostExecute(JSONArray arrayLists) {
             response.processFinish(arrayLists);
         }
 
         @Override
-        protected ArrayList<ArrayList<String>> doInBackground(Void... params) {
+        protected JSONArray doInBackground(Void... params) {
 
 
 
-            ArrayList<ArrayList<String>> outer=new ArrayList<>();
+           JSONArray outer=new JSONArray();
 
             BufferedReader reader = null;
             OutputStreamWriter writer=null;
@@ -145,27 +145,7 @@ class DatabaseConnection_Fixtures {
                     sb.append(line).append("\n");
                     line = sb.toString();
                     JSONArray jsonArray = new JSONArray(line);
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        ArrayList<String> inner=new ArrayList<>();
-                        JSONObject jsonobject = jsonArray.getJSONObject(i);
-                        String clubname = jsonobject.getString("name");
-                        String wins=""+jsonobject.getInt("wins");
-                        String draws=""+jsonobject.getInt("draws");
-                        String losses=""+jsonobject.getInt("lost");
-                        String playername = jsonobject.optString("Name", "");
-                        String age=""+jsonobject.optInt("Age", -1);
-                        String pos = jsonobject.optString("position", "");
-                        // Log.e("Tag", home);
-                        inner.add(clubname);
-                        inner.add(wins);
-                        inner.add(draws);
-                        inner.add(losses);
-                        inner.add(playername);
-                        inner.add(age);
-                        inner.add(pos);
-                        Log.e("tag",clubname);
-                        outer.add(inner);
-                    }
+                    outer=jsonArray;
                 }
 
             }
