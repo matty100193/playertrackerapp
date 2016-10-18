@@ -1,6 +1,7 @@
 package com.matty_christopher.englandplayertracker;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -72,12 +73,16 @@ public class SquadFragment extends Fragment implements View.OnClickListener {
         v= inflater.inflate(R.layout.activity_screen_slide, container, false);
         Button button=(Button)v.findViewById(R.id.button);
         button.setOnClickListener(this);
-        DatabaseConnection_Fixtures databaseConnection_fixtures=new DatabaseConnection_Fixtures();
+        searchbox=(AutoCompleteTextView)v.findViewById(R.id.searchbox);
+        searchbox.setHint("enter team here...");
+
+        DatabaseConnection_Fixtures databaseConnection_fixtures=new DatabaseConnection_Fixtures(getContext());
         databaseConnection_fixtures.getSquads(new Db_response<JSONArray>() {
             @Override
-            public void processFinish(JSONArray output) {
+            public void processFinish(final JSONArray output) {
                 if (output.length() > 0) {
                     getData(output);
+
                 } else {
                     Toast.makeText(getActivity(), "Problem retrieving data", Toast.LENGTH_SHORT).show();
                 }
@@ -130,16 +135,15 @@ public class SquadFragment extends Fragment implements View.OnClickListener {
                 R.drawable.west_bromwich, R.drawable.west_ham};
 
 
-        searchbox=(AutoCompleteTextView)v.findViewById(R.id.searchbox);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,teams);
         searchbox.setAdapter(adapter);
         searchbox.setThreshold(1);
-        searchbox.setHint("enter team here...");
 
         mPager = (ViewPager) v.findViewById(R.id.pager);
         mPagerAdapter = new ScreenSlidePagerAdapter(getChildFragmentManager());
 
         new setAdapterTask().execute();
+
     }
 
     @Override

@@ -83,7 +83,7 @@ public class FixturesFragment extends Fragment {
 
         //textView = (TextView)v.findViewById(R.id.textView2);
         //textView.setText("Hello");
-        DatabaseConnection_Fixtures dbconnection=new DatabaseConnection_Fixtures();
+        DatabaseConnection_Fixtures dbconnection=new DatabaseConnection_Fixtures(getContext());
         dbconnection.getFixtures(new Db_response<ArrayList<ArrayList>>() {
             @Override
             public void processFinish(ArrayList<ArrayList> output) {

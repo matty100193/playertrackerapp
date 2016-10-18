@@ -1,6 +1,9 @@
 package com.matty_christopher.englandplayertracker;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.ContentValues;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -17,12 +20,17 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 
+import dmax.dialog.SpotsDialog;
+
 class DatabaseConnection_Fixtures {
 
     private static final String address="http://eziochrist.com/";
+    private AlertDialog dialog;
 
-    public DatabaseConnection_Fixtures(){
-
+    public DatabaseConnection_Fixtures(Context context){
+        dialog=new SpotsDialog(context,R.style.Custom_dialog);
+        dialog.show();
+        dialog.setCancelable(false);
     }
 
 
@@ -51,6 +59,7 @@ class DatabaseConnection_Fixtures {
 
         @Override
         protected void onPostExecute(ArrayList<ArrayList> arrayLists) {
+            dialog.dismiss();
             response.processFinish(arrayLists);
         }
 
@@ -119,6 +128,7 @@ class DatabaseConnection_Fixtures {
 
         @Override
         protected void onPostExecute(JSONArray arrayLists) {
+            dialog.dismiss();
             response.processFinish(arrayLists);
         }
 
