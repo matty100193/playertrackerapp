@@ -1,7 +1,8 @@
 package com.matty_christopher.englandplayertracker;
 
 
-        import android.graphics.Bitmap;
+
+import android.graphics.Bitmap;
         import android.graphics.BitmapFactory;
         import android.os.Bundle;
         import android.os.Handler;
@@ -56,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
         navigationView = (NavigationView) findViewById(R.id.nav_view);
 
         mHandler = new Handler();
-        
+
         navHeader = navigationView.getHeaderView(0);
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         imgProfile = (ImageView) navHeader.findViewById(R.id.profile);

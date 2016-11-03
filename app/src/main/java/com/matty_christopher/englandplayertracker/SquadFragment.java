@@ -1,31 +1,21 @@
 package com.matty_christopher.englandplayertracker;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TableLayout;
-import android.widget.TableRow;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -33,13 +23,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.zip.Inflater;
 
 public class SquadFragment extends Fragment implements View.OnClickListener {
     private static final int NUM_PAGES = 20;
@@ -76,7 +60,7 @@ public class SquadFragment extends Fragment implements View.OnClickListener {
         searchbox=(AutoCompleteTextView)v.findViewById(R.id.searchbox);
         searchbox.setHint("enter team here...");
 
-        DatabaseConnection_Fixtures databaseConnection_fixtures=new DatabaseConnection_Fixtures(getContext());
+        DatabaseConnection databaseConnection_fixtures=new DatabaseConnection(getContext());
         databaseConnection_fixtures.getSquads(new Db_response<JSONArray>() {
             @Override
             public void processFinish(final JSONArray output) {

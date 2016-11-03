@@ -22,12 +22,12 @@ import java.util.ArrayList;
 
 import dmax.dialog.SpotsDialog;
 
-class DatabaseConnection_Fixtures {
+class DatabaseConnection {
 
     private static final String address="http://eziochrist.com/";
     private AlertDialog dialog;
 
-    public DatabaseConnection_Fixtures(Context context){
+    public DatabaseConnection(Context context){
         dialog=new SpotsDialog(context,R.style.Custom_dialog);
         dialog.show();
         dialog.setCancelable(false);
@@ -41,6 +41,10 @@ class DatabaseConnection_Fixtures {
     public void getSquads(Db_response<JSONArray> response){
         Log.e("tag","test before");
         new getSquadsAsync(response).execute();
+    }
+
+    public void getMatches(Db_response<JSONArray> response){
+        new getMatchesAsync(response).execute();
     }
 
 
@@ -92,7 +96,7 @@ class DatabaseConnection_Fixtures {
                         String round = jsonobject.getString("round");
                         String home=jsonobject.getString("home");
                         String away=jsonobject.getString("away");
-                       // Log.e("Tag", home);
+                        // Log.e("Tag", home);
                         inner.add(round);
                         inner.add(home);
                         inner.add(away);
@@ -137,7 +141,7 @@ class DatabaseConnection_Fixtures {
 
 
 
-           JSONArray outer=new JSONArray();
+            JSONArray outer=new JSONArray();
 
             BufferedReader reader = null;
             OutputStreamWriter writer=null;
@@ -173,6 +177,62 @@ class DatabaseConnection_Fixtures {
         }
     }
 
+    private class getMatchesAsync extends AsyncTask<Void,Void,JSONArray> {
+
+        private Db_response<JSONArray> response;
+
+        public getMatchesAsync(Db_response<JSONArray> response) {
+            this.response=response;
+        }
+
+        @Override
+        protected void onPostExecute(JSONArray jsonArray) {
+            dialog.dismiss();
+            response.processFinish(jsonArray);
+        }
+
+        @Override
+        protected JSONArray doInBackground(Void... params) {
+            JSONArray results=new JSONArray();
+            BufferedReader reader = null;
+            OutputStreamWriter writer=null;
+
+            HttpURLConnection con = null;
+            try {
+                URL u = new URL(address+"results.php");
+                con = (HttpURLConnection) u.openConnection();
+                con.setRequestMethod("GET");
+                //con.setConnectTimeout(1000);
+                //con.setReadTimeout(1000);
+                StringBuilder sb = new StringBuilder();
+                reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
+
+                String line;
+                if ((line = reader.readLine()) != null) {
+                    sb.append(line).append("\n");
+                    line = sb.toString();
+                    JSONArray jsonArray = new JSONArray(line);
+                    results=jsonArray;
+                }
+
+            }
+            catch (Exception e) {
+                Log.e("Tag", "Explanation of what was being attempted when the exception was thrown", e);
+            }
+            finally {
+                if (con != null) {con.disconnect();}
+                if(writer!=null){try {writer.close();} catch (IOException e) {Log.e("Tag", "Explanation of what was being attempted when the exception was thrown", e);}}
+                if (reader != null) {try {reader.close();} catch (IOException e) {Log.e("Tag", "Explanation of what was being attempted when the exception was thrown", e);}}
+            }
+            return  results;
+
+        }
+
+
+    }
+
+
+
 /*
 * modified from http://stackoverflow.com/questions/30740359/namevaluepair-httpparams-httpconnection-params-deprecated-on-server-request-cl,
 * author Gagandeep Singh- modified to take in ContentValues
@@ -195,6 +255,8 @@ class DatabaseConnection_Fixtures {
         }
         return sb.toString();
     }
+
+
 
 }
 

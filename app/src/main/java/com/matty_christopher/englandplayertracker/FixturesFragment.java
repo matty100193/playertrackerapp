@@ -6,12 +6,10 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -83,7 +81,7 @@ public class FixturesFragment extends Fragment {
 
         //textView = (TextView)v.findViewById(R.id.textView2);
         //textView.setText("Hello");
-        DatabaseConnection_Fixtures dbconnection=new DatabaseConnection_Fixtures(getContext());
+        DatabaseConnection dbconnection=new DatabaseConnection(getContext());
         dbconnection.getFixtures(new Db_response<ArrayList<ArrayList>>() {
             @Override
             public void processFinish(ArrayList<ArrayList> output) {
