@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/tr_row"
+    android:layout_width="match_parent"
+    android:layout_height="100dp">
+
+    <RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:src="#c9fad7d7"
+                android:layout_alignParentTop="true"
+                android:id="@+id/imageView2"
+                android:layout_marginRight="5dp"
+                android:layout_alignParentStart="true"
+                android:cropToPadding="false" />
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:src="#c9fad7d7"
+                android:layout_alignParentTop="true"
+                android:id="@+id/imageView3"
+                android:layout_marginLeft="5dp"
+                android:layout_alignParentStart="true"
+                android:cropToPadding="false" />
+
+        </LinearLayout>
+
+
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="120dp"
+            android:maxHeight="160dp"
+            android:src="@drawable/afc_bournemouth"
+            android:id="@+id/homeLogo"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="21dp" />
+
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="120dp"
+            android:maxHeight="160dp"
+            android:src="@drawable/arsenal"
+            android:id="@+id/awayLogo"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="20dp" />
+
+        <TextView
+            android:text="3"
+            android:textColor="#a73a12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="60sp"
+            android:id="@+id/scoreHome"
+            android:layout_marginLeft="20dp"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@+id/homeLogo" />
+
+        <TextView
+            android:text="3"
+            android:textColor="#a73a12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="60sp"
+            android:layout_centerVertical="true"
+            android:id="@+id/scoreAway"
+            android:layout_marginRight="20dp"
+            android:layout_toStartOf="@id/awayLogo"
+            android:layout_centerHorizontal="true" />
+
+
+
+
+    </RelativeLayout>
+
+</TableRow>

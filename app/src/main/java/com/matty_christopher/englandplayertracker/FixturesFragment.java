@@ -128,7 +128,7 @@ public class FixturesFragment extends Fragment {
                 tv1.setPadding(5, 10, 5, 10);
                 rowRound.addView(tv1);
                 rowRound.setGravity(Gravity.CENTER_HORIZONTAL);
-                rowRound.setBackgroundColor(Color.rgb(182, 236, 255));
+                rowRound.setBackgroundColor(Color.rgb(250, 215, 215));
                 showFixtures.addView(rowRound, new TableLayout.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
 
             }

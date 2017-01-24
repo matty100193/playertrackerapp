@@ -4,7 +4,8 @@ package com.matty_christopher.englandplayertracker;
 
 import android.graphics.Bitmap;
         import android.graphics.BitmapFactory;
-        import android.os.Bundle;
+import android.media.MediaPlayer;
+import android.os.Bundle;
         import android.os.Handler;
         import android.support.design.widget.NavigationView;
         import android.support.v4.app.Fragment;
@@ -67,6 +68,8 @@ public class MainActivity extends AppCompatActivity {
         // load toolbar titles from string resources
         activityTitles = getResources().getStringArray(R.array.nav_item_activity_titles);
 
+        MediaPlayer mediaPlayer=MediaPlayer.create(getApplicationContext(),R.raw.threelions);
+        mediaPlayer.start();
 
         // load nav menu header data
 
