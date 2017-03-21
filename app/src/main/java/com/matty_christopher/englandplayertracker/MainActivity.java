@@ -39,7 +39,9 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG_PHOTOS = "results";
     private static final String TAG_MOVIES = "fixtures";
     private static final String TAG_NOTIFICATIONS = "squads";
+    private static final String TAG_MUSIC="musicbar";
     public static String CURRENT_TAG = TAG_HOME;
+    public  MediaPlayer mediaPlayer;
 
     // toolbar titles respected to selected nav menu item
     private String[] activityTitles;
@@ -64,12 +66,12 @@ public class MainActivity extends AppCompatActivity {
         imgProfile = (ImageView) navHeader.findViewById(R.id.profile);
         // Navigation view header
 
-
         // load toolbar titles from string resources
         activityTitles = getResources().getStringArray(R.array.nav_item_activity_titles);
 
-        MediaPlayer mediaPlayer=MediaPlayer.create(getApplicationContext(),R.raw.threelions);
+        mediaPlayer=MediaPlayer.create(getApplicationContext(),R.raw.threelions);
         mediaPlayer.start();
+        mediaPlayer.setLooping(true);
 
         // load nav menu header data
 
@@ -159,6 +161,9 @@ public class MainActivity extends AppCompatActivity {
                 SquadFragment squadFragment = new SquadFragment();
                 return squadFragment;
 
+            case 4:
+                mediaPlayer.pause();
+
             default:
                 return new HomeFragment();
         }
@@ -198,6 +203,11 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.nav_squads:
                         navItemIndex = 3;
                         CURRENT_TAG = TAG_NOTIFICATIONS;
+                        break;
+
+                    case R.id.musicbar:
+                        navItemIndex = 4;
+                        CURRENT_TAG = TAG_MUSIC;
                         break;
 
                     default:
